@@ -1,5 +1,6 @@
 from src.game_renderer import GameRenderer
 import pygame
+from OpenGL.GL import glClear, GL_COLOR_BUFFER_BIT, GL_DEPTH_BUFFER_BIT
 
 def main():
     # Inicializar el juego con una ventana de 800x600
