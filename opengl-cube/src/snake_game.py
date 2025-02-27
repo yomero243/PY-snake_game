@@ -2,6 +2,10 @@
 import curses
 import random
 import time
+import pygame
+from OpenGL.GL import *
+from OpenGL.GLU import *
+from game_renderer import GameRenderer
 
 def init_colors():
     """Initialize color pairs for the game"""
@@ -20,6 +24,9 @@ def is_valid_move(key, current_direction):
     return True
 
 def main(stdscr):
+    # Initialize OpenGL renderer
+    renderer = GameRenderer(800, 600)
+    
     # Setup initial game state
     curses.curs_set(0)      # Hide cursor
     stdscr.timeout(100)     # Refresh rate
@@ -42,7 +49,6 @@ def main(stdscr):
     
     # Create initial food position
     food = [sh // 2, sw // 2]
-    stdscr.addch(food[0], food[1], 'O', curses.color_pair(2))
     
     # Initial direction (right)
     direction = curses.KEY_RIGHT
@@ -61,8 +67,16 @@ def main(stdscr):
         stdscr.addch(y, x, '■', curses.color_pair(1))
     
     # Game loop
-    # Game loop
     while True:
+        # Clear OpenGL buffer
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+        
+        # Draw the rotating cube at food position
+        renderer.draw_cube(food[1], food[0])
+        
+        # Update pygame display
+        pygame.display.flip()
+        
         # Get next key input (if available)
         next_key = stdscr.getch()
         
@@ -124,7 +138,6 @@ def main(stdscr):
                     random.randint(1, sw - 2)
                 ]
                 food = nf if nf not in snake else None
-            stdscr.addch(food[0], food[1], 'O', curses.color_pair(2))
             
             # Increase score and update level
             score += 10

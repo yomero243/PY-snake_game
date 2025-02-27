@@ -1,2 +1,4 @@
 PyOpenGL
 pygame
+numpy
+curses
