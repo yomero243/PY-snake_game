@@ -18,28 +18,52 @@ class GameRenderer:
         glMatrixMode(GL_MODELVIEW)
         glEnable(GL_DEPTH_TEST)
         
-    def draw_cube(self, x, y):
+    def draw_cube(self, x, y, color=(1.0, 1.0, 1.0)):
         glPushMatrix()
-        # Convert 2D coordinates to 3D space
         glTranslatef(x * 0.1 - 1, y * 0.1 - 1, -5)
         glRotatef(self.rotation, 1, 1, 1)
-        glScale(0.05, 0.05, 0.05)  # Make cube smaller
+        glScale(0.05, 0.05, 0.05)
         
-        # Draw cube
         glBegin(GL_QUADS)
-        # Front face (red)
-        glColor3f(1.0, 0.0, 0.0)
+        # All faces use the same color
+        glColor3f(*color)
+        
+        # Front face
         glVertex3f(-1, -1, 1)
         glVertex3f(1, -1, 1)
         glVertex3f(1, 1, 1)
         glVertex3f(-1, 1, 1)
-        # Back face (green)
-        glColor3f(0.0, 1.0, 0.0)
+        
+        # Back face
         glVertex3f(-1, -1, -1)
         glVertex3f(-1, 1, -1)
         glVertex3f(1, 1, -1)
         glVertex3f(1, -1, -1)
-        glEnd()
-        glPopMatrix()
         
+        # Top face
+        glVertex3f(-1, 1, -1)
+        glVertex3f(-1, 1, 1)
+        glVertex3f(1, 1, 1)
+        glVertex3f(1, 1, -1)
+        
+        # Bottom face
+        glVertex3f(-1, -1, -1)
+        glVertex3f(1, -1, -1)
+        glVertex3f(1, -1, 1)
+        glVertex3f(-1, -1, 1)
+        
+        # Right face
+        glVertex3f(1, -1, -1)
+        glVertex3f(1, 1, -1)
+        glVertex3f(1, 1, 1)
+        glVertex3f(1, -1, 1)
+        
+        # Left face
+        glVertex3f(-1, -1, -1)
+        glVertex3f(-1, -1, 1)
+        glVertex3f(-1, 1, 1)
+        glVertex3f(-1, 1, -1)
+        glEnd()
+        
+        glPopMatrix()
         self.rotation += 1
