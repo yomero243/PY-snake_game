@@ -4,12 +4,20 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 import random
 import sys
+import os
 
 class SnakeGame:
     def __init__(self, width, height):
         pygame.init()
         self.game = GameRenderer(width, height)
         self.clock = pygame.time.Clock()
+        
+        # Cargar el modelo FBX
+        model_path = os.path.join(os.path.dirname(__file__), 'src', 'movie_camera.fbx')
+        self.has_camera_model = self.game.load_fbx_model('camera', model_path)
+        if not self.has_camera_model:
+            print("¡Advertencia! No se pudo cargar el modelo de cámara. Se usará un cubo por defecto.")
+        
         self.reset_game()
 
     def reset_game(self):
@@ -85,8 +93,13 @@ class SnakeGame:
                 # Body color (green)
                 self.game.draw_cube(segment[0], segment[1], color=(0.0, 1.0, 0.0))
         
-        # Draw food (blue)
-        self.game.draw_cube(self.food[0], self.food[1], color=(0.0, 0.0, 1.0))
+        # Draw food (using model or cube)
+        if self.has_camera_model:
+            # Usar el modelo de cámara para la comida con una rotación progresiva
+            self.game.draw_model('camera', self.food[0], self.food[1], scale=0.005)
+        else:
+            # Usar un cubo azul si no se pudo cargar el modelo
+            self.game.draw_cube(self.food[0], self.food[1], color=(0.0, 0.0, 1.0))
         
         pygame.display.flip()
 

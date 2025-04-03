@@ -1,4 +1,4 @@
 PyOpenGL
 pygame
 numpy
-curses
+pyassimp
