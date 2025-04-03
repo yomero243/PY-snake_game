@@ -2,3 +2,4 @@ PyOpenGL
 pygame
 numpy
 pyassimp
+PyGLM
